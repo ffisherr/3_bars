@@ -17,7 +17,6 @@ def seat_counter(bars):
             [bar.get('properties').get('Attributes').get('SeatsCount'),
              bar.get('properties').get('Attributes').get('Name')]
         )
-
     return seats_count
 
 
