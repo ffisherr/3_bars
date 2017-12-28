@@ -5,12 +5,13 @@
 # Как запустить
 
 Скрипт требует для своей работы установленного интерпретатора Python версии 3.5
+При запуске скрипта ему необходимо передать текущие координаты пользователя, а также путь до json-файла с данными о барах Москвы.
 
 Запуск на Linux:
 
 ```bash
 
-$ python bars.py # possibly requires call of python3 executive instead of just python
+$ python bars.py 50 37 'bars.json'# possibly requires call of python3 executive instead of just python
 #Пример вывода:
 КАТЕХИ                         #Ближайший бар
 Спорт бар «Красная машина»     #Самый большой бар
