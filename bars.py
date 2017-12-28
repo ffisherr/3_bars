@@ -5,7 +5,7 @@ import os
 from math import sqrt
 
 
-def createParser():
+def create_Parser():
     parser = argparse.ArgumentParser(description='Поиск бара')
     parser.add_argument('longitude',
                         type=float, nargs='+', help='It is your coordinates')
@@ -34,7 +34,7 @@ def seat_counter(bars):
 
 def load_json_data_from_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as json_file:
-            json_data = json.loads(json_file.read())
+        json_data = json.loads(json_file.read())
     return json_data
 
 
@@ -78,7 +78,7 @@ def get_closest_bar(bars_data, longitude, latitude):
 
 
 if __name__ == '__main__':
-    parser = createParser()
+    parser = create_Parser()
     namespace = parser.parse_args(sys.argv[1:])
     if os.path.exists(namespace.filepath[0]):
         try:
