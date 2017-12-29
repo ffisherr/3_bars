@@ -5,7 +5,7 @@ import os
 from math import sqrt
 
 
-def create_Parser():
+def create_parser():
     parser = argparse.ArgumentParser(description='Поиск бара')
     parser.add_argument('longitude',
                         type=float, nargs='+', help='It is your coordinates')
@@ -78,7 +78,7 @@ def get_closest_bar(bars_data, longitude, latitude):
 
 
 if __name__ == '__main__':
-    parser = create_Parser()
+    parser = create_parser()
     namespace = parser.parse_args(sys.argv[1:])
     if os.path.exists(namespace.filepath[0]):
         try:
