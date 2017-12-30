@@ -1,11 +1,10 @@
 import json
 import argparse
-import sys
 import os
 from math import sqrt
 
 
-def create_parser():
+def create_Parser():
     parser = argparse.ArgumentParser(description='Поиск бара')
     parser.add_argument('longitude',
                         type=float, nargs='+', help='It is your coordinates')
@@ -27,7 +26,7 @@ def seat_counter(bars):
     seats_count = []
     for bar in bars:
         seats_count.append(
-            bar.get('properties').get('Attributes').get('SeatsCount')
+            bar['properties']['Attributes']['SeatsCount']
         )
     return seats_count
 
@@ -41,7 +40,7 @@ def load_json_data_from_file(filepath):
 def looking_the_same(bars_data, this_bar):
     bars = []
     for bar in bars_data:
-        seats = bar.get('properties').get('Attributes').get('SeatsCount')
+        seats = bar['properties']['Attributes']['SeatsCount']
         if this_bar == seats:
             bars.append(bar)
     return bars
@@ -49,7 +48,7 @@ def looking_the_same(bars_data, this_bar):
 
 def get_biggest_bar(bars_data):
     seats_count = seat_counter(bars_data)
-    biggest_bar = max(seats_count)
+    biggest_bar = max(bars_data, key = seat_counter)
     return looking_the_same(bars_data, biggest_bar)
 
 
@@ -62,15 +61,15 @@ def get_smallest_bar(bars_data):
 def get_closest_bar(bars_data, longitude, latitude):
     distance_to_bars = []
     for bar in bars_data:
-        lon2 = bar.get('geometry').get('coordinates')[0]
-        lat2 = bar.get('geometry').get('coordinates')[1]
+        lon2 = bar['geometry']['coordinates'][0]
+        lat2 = bar['geometry']['coordinates'][1]
         distance_to_bars.append(
             get_distance(longitude, latitude, lon2, lat2))
     closest_bar = min(distance_to_bars)
     bars = []
     for bar in bars_data:
-        lon2 = bar.get('geometry').get('coordinates')[0]
-        lat2 = bar.get('geometry').get('coordinates')[1]
+        lon2 = bar['geometry']['coordinates'][0]
+        lat2 = bar['geometry']['coordinates'][1]
         distance = get_distance(longitude, latitude, lon2, lat2)
         if distance == closest_bar:
             bars.append(bar)
@@ -78,19 +77,19 @@ def get_closest_bar(bars_data, longitude, latitude):
 
 
 if __name__ == '__main__':
-    parser = create_parser()
-    namespace = parser.parse_args(sys.argv[1:])
-    if os.path.exists(namespace.filepath[0]):
+    parser = create_Parser()
+    args = parser.parse_args()
+    if os.path.exists(args.filepath[0]):
         try:
-            json_data = load_json_data_from_file(namespace.filepath[0])
+            json_data = load_json_data_from_file(args.filepath[0])
             print(get_closest_bar(
                 json_data['features'],
-                namespace.longitude[0],
-                namespace.latitude[0])
+                args.longitude[0],
+                args.latitude[0])
             )
             print(get_biggest_bar(json_data['features']))
             print(get_smallest_bar(json_data['features']))
         except ValueError:
                 print('Ошибка переобразования JSON файла')
     else:
-        print('Файла {} не найдено!'.format(namespace.filepath[0]))
+        print('Файла {} не найдено!'.format(args.filepath[0]))
