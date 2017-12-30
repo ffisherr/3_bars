@@ -18,8 +18,9 @@ $ python bars.py 50 37 'bars.json'# possibly requires call of python3 executive 
 БАР «Соки»                     #Самый маленький бар
 
 ```
-
 Запуск на Windows происходит аналогично.
+Ссылка для скачивания на файл с информацией о барах:
+https://github.com/ffisherr/3_bars/bars.json
 
 # Цели проекта
 
