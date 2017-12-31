@@ -4,7 +4,7 @@ import os
 from math import sqrt
 
 
-def create_parser():
+def create_Parser():
     parser = argparse.ArgumentParser(description='Поиск бара')
     parser.add_argument('longitude',
                         type=float, help='It is your coordinates')
@@ -64,18 +64,32 @@ def get_closest_bar(bars_data, longitude, latitude):
 
 
 if __name__ == '__main__':
-    parser = create_parser()
+    parser = create_Parser()
     args = parser.parse_args()
+    question = '''Что нужно найти?
+    1.Наименьший бар
+    2.Наибольший бар
+    3.Ближайший бар\n'''
     if os.path.exists(args.filepath):
         try:
+            print(question)
+            users_answer = int(input('Введите цифру от 1 до 3: \n'))
             json_data = load_json_data_from_file(args.filepath)
-            print(get_closest_bar(
-                json_data['features'],
-                args.longitude,
-                args.latitude)
-            )
-            print(get_biggest_bar(json_data['features']))
-            print(get_smallest_bar(json_data['features']))
+            json_dict = json_data['features']
+            if(users_answer == 1):
+                print('Наименьший бар', get_smallest_bar(json_dict))
+            elif(users_answer == 2):
+                print('Наибольший бар', get_biggest_bar(json_dict))
+            elif(users_answer == 3):
+                print(
+                    get_closest_bar(
+                        json_dict,
+                        args.longitude,
+                        args.latitude
+                        )
+                )
+            else:
+                print('Некорректный формат ответа')
         except ValueError:
                 print('Ошибка переобразования JSON файла')
     else:
