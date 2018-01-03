@@ -62,15 +62,21 @@ if __name__ == '__main__':
         try:
             json_data = load_json_data_from_file(args.filepath)
             bars = json_data['features']
-            print('Наименьший бар', get_smallest_bar(bars))
-            print('Наибольший бар', get_biggest_bar(bars))
+            print(
+                'Наименьший бар',
+                get_smallest_bar(bars)['properties']['Attributes']['Name']
+            )
+            print(
+                'Наибольший бар',
+                get_biggest_bar(bars)['properties']['Attributes']['Name']
+            )
             print(
                 'Ближайший бар',
                 get_closest_bar(
                     bars,
                     args.longitude,
                     args.latitude
-                    )
+                    )['properties']['Attributes']['Name']
             )
         except ValueError:
                 print('Ошибка переобразования JSON файла')
