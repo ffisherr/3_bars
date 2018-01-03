@@ -1,7 +1,6 @@
 import json
 import argparse
 import os
-from math import sqrt
 
 
 def create_parser():
@@ -37,14 +36,20 @@ def get_smallest_bar(bars_data):
     return smallest_bar
 
 
+def get_distance(user_lon, user_lat, longitude, latitude):
+    distance = abs(user_lon - longitude) + abs(user_lat - latitude)
+    return distance
+
+
 def get_closest_bar(bars_data, longitude, latitude):
     closest_bar = min(
         bars_data,
         key=lambda bar:
-        abs(
-            bar['geometry']['coordinates'][0] - longitude
-        ) + abs(
-            bar['geometry']['coordinates'][1] - latitude
+        get_distance(
+            bar['geometry']['coordinates'][0],
+            bar['geometry']['coordinates'][1],
+            longitude,
+            latitude
         )
     )
     return closest_bar
