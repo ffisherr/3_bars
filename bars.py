@@ -15,13 +15,6 @@ def create_parser():
     return parser
 
 
-def get_distance(user_lon, user_lat, bar_lon, bar_lat):
-    return sqrt(
-        (float(user_lon) - float(bar_lon)) ** 2 +
-        (float(user_lat) - float(bar_lat)) ** 2
-        )
-
-
 def load_json_data_from_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as json_file:
         json_data = json.loads(json_file.read())
@@ -45,22 +38,13 @@ def get_smallest_bar(bars_data):
 
 
 def get_closest_bar(bars_data, longitude, latitude):
-    distance_to_bars = []
-    for bar in bars_data:
-        lon2 = bar['geometry']['coordinates'][0]
-        lat2 = bar['geometry']['coordinates'][1]
-        distance_to_bars.append(
-            get_distance(longitude, latitude, lon2, lat2)
-        )
-    closest_bar = min(distance_to_bars)
-    bars = []
-    for bar in bars_data:
-        lon2 = bar['geometry']['coordinates'][0]
-        lat2 = bar['geometry']['coordinates'][1]
-        distance = get_distance(longitude, latitude, lon2, lat2)
-        if distance == closest_bar:
-            bars.append(bar)
-    return bars
+    closest_bar = min(
+        bars_data,
+        key=lambda bar:
+        abs(bar['geometry']['coordinates'][0] - longitude)
+        + abs(bar['geometry']['coordinates'][1] - latitude)
+    )
+    return closest_bar
 
 
 if __name__ == '__main__':
@@ -69,12 +53,13 @@ if __name__ == '__main__':
     if os.path.exists(args.filepath):
         try:
             json_data = load_json_data_from_file(args.filepath)
-            json_dict = json_data['features']
-            print('Наименьший бар', get_smallest_bar(json_dict))
-            print('Наибольший бар', get_biggest_bar(json_dict))
+            bars = json_data['features']
+            print('Наименьший бар', get_smallest_bar(bars))
+            print('Наибольший бар', get_biggest_bar(bars))
             print(
+                'Ближайший бар',
                 get_closest_bar(
-                    json_dict,
+                    bars,
                     args.longitude,
                     args.latitude
                     )
