@@ -41,8 +41,11 @@ def get_closest_bar(bars_data, longitude, latitude):
     closest_bar = min(
         bars_data,
         key=lambda bar:
-        abs(bar['geometry']['coordinates'][0] - longitude)
-        + abs(bar['geometry']['coordinates'][1] - latitude)
+        abs(
+            bar['geometry']['coordinates'][0] - longitude
+        ) + abs(
+            bar['geometry']['coordinates'][1] - latitude
+        )
     )
     return closest_bar
 
