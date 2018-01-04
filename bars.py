@@ -5,12 +5,21 @@ import os
 
 def create_parser():
     parser = argparse.ArgumentParser(description='Поиск бара')
-    parser.add_argument('longitude',
-                        type=float, help='It is your coordinates')
-    parser.add_argument('latitude',
-                        type=float, help='It is your coordinates')
-    parser.add_argument('filepath',
-                        type=str, help='Way to json file with data')
+    parser.add_argument(
+        'longitude',
+        type=float,
+        help='It is your coordinates'
+    )
+    parser.add_argument(
+        'latitude',
+        type=float,
+        help='It is your coordinates'
+    )
+    parser.add_argument(
+        'filepath',
+        type=str,
+        help='Way to json file with data'
+    )
     return parser
 
 
